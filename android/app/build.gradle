@@ -1,0 +1,63 @@
+// File: android/app/build.gradle
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace 'com.example.mitra' // Replace with your actual package name
+    compileSdkVersion 33
+
+    defaultConfig {
+        applicationId "com.example.mitra" // Replace with your actual application ID
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+
+        // Enabling multidex support if needed
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // You can add other release configurations here
+            // For example, to enable code shrinking:
+            // minifyEnabled true
+            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Ensure that compileOptions are correctly configured
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // Configure Kotlin compiler options
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    // If you are using Jetpack Compose, add this block
+    // buildFeatures {
+    //     compose true
+    // }
+    // composeOptions {
+    //     kotlinCompilerExtensionVersion '1.4.8'
+    // }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // For multidex support (if needed)
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    // Add your other dependencies here
+    // For example:
+    // implementation 'com.google.android.material:material:1.6.0'
+    // implementation 'androidx.appcompat:appcompat:1.4.2'
+
+    // Remove Flutter dependencies here
+}
