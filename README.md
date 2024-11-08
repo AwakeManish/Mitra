@@ -12,6 +12,19 @@
 
 A powerful app built with Flutter that integrates AI chatbots, image generation, and language translation features.
 
+---
+
+## 📦 APKs:
+
+- **Global APK:**  
+  [Download Global APK](https://github.com/HarshAndroid/ai_assistant/blob/master/sample%20apk/ai_assistant_12_07_2024_global.apk)  
+  _(Supports all devices)_
+
+- **ARM APK:**  
+  [Download ARM APK](https://github.com/HarshAndroid/ai_assistant/blob/master/sample%20apk/ai_assistant_12_07_2024_armv7.apk)  
+  _(Supports ARM v7 and v8 devices)_
+
+---
 
 ## 📸 Screenshots:
 
@@ -43,6 +56,13 @@ A powerful app built with Flutter that integrates AI chatbots, image generation,
 - Modern UI with New Material Widgets.
 - Cloud Integration for App Write.
 - **And much more...**
+
+---
+
+## 🎥 YouTube Course:
+
+Check out the full **YouTube Course**:  
+[Watch the Playlist](https://youtube.com/playlist?list=PL8kbUJtS6hyYWBLel9ZbzsmazQ4H8zWYG&si=fjsGc7SK8dN4D0Kq)
 
 ---
 
