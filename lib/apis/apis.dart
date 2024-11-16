@@ -5,6 +5,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:http/http.dart';
 import 'package:translator_plus/translator_plus.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 
 class APIs {
   // Access the API key
@@ -63,6 +64,31 @@ class APIs {
     } catch (e) {
       log('googleTranslateE: $e ');
       return 'Something went wrong!';
+    }
+  }
+
+// Fetch AQI data from OpenWeather API
+  static Future<Map<String, dynamic>?> fetchAQI(double lat, double lon) async {
+    final apiKey = dotenv.env['OPENWEATHER_API_KEY'] ?? '';
+    if (apiKey.isEmpty) {
+      log('OpenWeather API key is missing.');
+      return {'error': 'API key missing'};
+    }
+
+    final url = Uri.parse(
+        'https://api.openweathermap.org/data/2.5/air_pollution?lat=$lat&lon=$lon&appid=$apiKey');
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        log('Failed to fetch AQI data: ${response.statusCode}');
+        return {'error': 'Failed to fetch AQI data'};
+      }
+    } catch (e) {
+      log('fetchAQIError: $e');
+      return {'error': 'An error occurred: $e'};
     }
   }
 }
