@@ -62,9 +62,6 @@ dependencies:
   # For Sharing Image
   share_plus: ^9.0.0
 
-  # Facebook Ads
-  easy_audience_network: ^0.0.6
-
   flutter_dotenv: ^5.2.1
 
 dev_dependencies:
