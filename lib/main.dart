@@ -6,8 +6,8 @@ import 'helper/pref.dart';
 import 'screen/splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +16,13 @@ Future<void> main() async {
   await Pref.initialize();
   //init firebase
   await Firebase.initializeApp();
+  // Sign in anonymously (ensure Anonymous sign-in is enabled in Firebase Console)
+  try {
+    await FirebaseAuth.instance.signInAnonymously();
+    print('Signed in anonymously');
+  } catch (e) {
+    print('Failed to sign in anonymously: $e');
+  }
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
