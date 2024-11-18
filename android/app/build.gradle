@@ -9,25 +9,44 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.example.mitra" // Must match Firebase package name
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdkVersion 23
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
         // Enable MultiDex if your app exceeds the 64K method limit
         multiDexEnabled true
     }
-
-    buildTypes {
+        buildTypes {
         release {
+            // Enables code shrinking, obfuscation, and optimization
+            minifyEnabled true
+            // Enables resource shrinking, which removes unused resources
+            shrinkResources true
+
+            // ProGuard configuration files
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            // Typically, code shrinking is disabled for debug builds
             minifyEnabled false
-            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources false
         }
     }
+        compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+     kotlinOptions {
+        jvmTarget = "17"
+    }
+
+
 
     // Ensure the namespace matches your package name (for newer Gradle versions)
     namespace 'com.example.mitra'
