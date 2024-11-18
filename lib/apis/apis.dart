@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class APIs {
   // Access the API key
-  static final String apiKey = dotenv.env['API_KEY'] ?? '';
+  static final String apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
 
   // Get answer from Google Gemini AI
   static Future<String> getAnswer(String question) async {
@@ -67,24 +67,42 @@ class APIs {
     }
   }
 
-// Fetch AQI data from OpenWeather API
-  static Future<Map<String, dynamic>?> fetchAQI(double lat, double lon) async {
-    final apiKey = dotenv.env['OPENWEATHER_API_KEY'] ?? '';
+// Fetch AQI data from WAQI API
+  static Future<Map<String, dynamic>> fetchAQI(String city) async {
+    final apiKey = dotenv.env['AQI_API_KEY'] ?? '';
     if (apiKey.isEmpty) {
-      log('OpenWeather API key is missing.');
+      log('AQI API key is missing.');
       return {'error': 'API key missing'};
     }
 
-    final url = Uri.parse(
-        'https://api.openweathermap.org/data/2.5/air_pollution?lat=$lat&lon=$lon&appid=$apiKey');
+    final encodedCity = Uri.encodeComponent(city);
+    final url =
+        Uri.parse('https://api.waqi.info/feed/$encodedCity/?token=$apiKey');
 
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final data = jsonDecode(response.body);
+        if (data['status'] == 'ok') {
+          return data['data'];
+        } else {
+          // Handle different types of error messages
+          String errorMessage;
+          if (data['data'] is Map && data['data']['message'] != null) {
+            errorMessage = data['data']['message'];
+          } else if (data['data'] is String) {
+            errorMessage = data['data'];
+          } else if (data['message'] != null) {
+            errorMessage = data['message'];
+          } else {
+            errorMessage = 'Unknown error';
+          }
+          log('Failed to fetch AQI data: $errorMessage');
+          return {'error': errorMessage};
+        }
       } else {
         log('Failed to fetch AQI data: ${response.statusCode}');
-        return {'error': 'Failed to fetch AQI data'};
+        return {'error': 'Failed to fetch AQI data: ${response.statusCode}'};
       }
     } catch (e) {
       log('fetchAQIError: $e');

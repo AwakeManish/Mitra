@@ -11,31 +11,34 @@ class AQIFeature extends StatefulWidget {
 class AQIFeatureState extends State<AQIFeature> {
   String? aqiDataMessage;
   bool isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    getAQIData(37.7749, -122.4194); // Example coordinates
-  }
+  final TextEditingController cityController = TextEditingController();
 
   // Function to get AQI data
-  void getAQIData(double lat, double lon) async {
+  void getAQIData(String city) async {
     setState(() {
       isLoading = true;
       aqiDataMessage = null;
     });
 
-    final aqiData = await APIs.fetchAQI(lat, lon);
+    final aqiData = await APIs.fetchAQI(city);
 
     setState(() {
       isLoading = false;
-      if (aqiData != null && aqiData.containsKey('error')) {
+      if (aqiData.containsKey('error')) {
         aqiDataMessage = 'Error: ${aqiData['error']}';
+      } else if (aqiData['aqi'] != null && aqiData['aqi'] is int) {
+        final aqiIndex = aqiData['aqi'];
+        aqiDataMessage = 'AQI for $city: $aqiIndex';
       } else {
-        final aqiIndex = aqiData?['list']?[0]?['main']?['aqi'];
-        aqiDataMessage = 'AQI: $aqiIndex';
+        aqiDataMessage = 'AQI data not available for $city.';
       }
     });
+  }
+
+  @override
+  void dispose() {
+    cityController.dispose();
+    super.dispose();
   }
 
   @override
@@ -47,22 +50,36 @@ class AQIFeatureState extends State<AQIFeature> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            TextFormField(
+              controller: cityController,
+              decoration: const InputDecoration(
+                labelText: 'Enter City Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                getAQIData(37.7749,
-                    -122.4194); // Replace with actual location if needed
+                final city = cityController.text.trim();
+                if (city.isNotEmpty) {
+                  getAQIData(city);
+                } else {
+                  setState(() {
+                    aqiDataMessage = 'Please enter a city name.';
+                  });
+                }
               },
               child: const Text('Get AQI'),
             ),
             const SizedBox(height: 20),
-            isLoading
-                ? const CircularProgressIndicator() // Show loading indicator when fetching data
-                : Text(
-                    aqiDataMessage ?? 'Press the button to get AQI data',
-                    style: const TextStyle(fontSize: 18),
-                  ),
+            if (isLoading)
+              const CircularProgressIndicator()
+            else if (aqiDataMessage != null)
+              Text(
+                aqiDataMessage!,
+                style: const TextStyle(fontSize: 18),
+              ),
           ],
         ),
       ),
