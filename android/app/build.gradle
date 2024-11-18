@@ -51,7 +51,7 @@ dependencies {
     // Add the dependencies for Firebase products you want to use
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore'
-    // implementation 'com.google.firebase:firebase-auth' // Uncomment if using Firebase Authentication
+    implementation 'com.google.firebase:firebase-auth' 
 
     // Add any other dependencies here
 }
