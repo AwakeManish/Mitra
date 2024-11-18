@@ -14,10 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # App Write Database (For dynamically getting API Key)  
-  appwrite: ^12.0.4
-  # appwrite: 
-  #   path: ./appwrite
+
 
   # Core dependency for using Firebase in a Flutter app. 
   # It provides the initialization of Firebase services.
@@ -72,7 +69,7 @@ dependencies:
   gallery_saver_updated: ^3.0.0
 
   # For Sharing Image
-  share_plus: ^9.0.0
+  share_plus: ^10.1.2
 
   flutter_dotenv: ^5.2.1
 
