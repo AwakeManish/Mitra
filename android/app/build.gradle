@@ -1,57 +1,44 @@
-plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
-
-    // Add the Google services Gradle plugin
-    id "com.google.gms.google-services"
-}
-
-android {
-    namespace = "com.example.mitra"
-    compileSdk = 34
-    ndkVersion = flutter.ndkVersion
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
-
-    defaultConfig {
-        // Specify your unique Application ID
-        applicationId = "com.example.mitra"
-        // Update values to match your application needs
-        minSdk = 23
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
-    }
-
-    buildTypes {
-        release {
-            // Add your own signing config for the release build
-            signingConfig = signingConfigs.debug
-        }
-    }
-}
 
 flutter {
     source = "../.."
 }
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        applicationId "com.example.mitra" // Must match Firebase package name
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+
+        // Enable MultiDex if your app exceeds the 64K method limit
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Ensure the namespace matches your package name (for newer Gradle versions)
+    namespace 'com.example.mitra'
+}
 
 dependencies {
     // Import the Firebase BoM
-    implementation platform('com.google.firebase:firebase-bom:33.6.0')
+    implementation platform('com.google.firebase:firebase-bom:32.2.0') // Use the latest BOM version
 
-    // Add the dependencies for Firebase products you want to use
-    implementation 'com.google.firebase:firebase-analytics'
+    // Add Firebase dependencies without version numbers
+    implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'
-    // implementation 'com.google.firebase:firebase-auth' // Uncomment if using Firebase Authentication
 
-    // Add any other dependencies here
+    // Add other dependencies as needed
 }
+
+// Apply the Google services plugin at the bottom
+apply plugin: 'com.google.gms.google-services'

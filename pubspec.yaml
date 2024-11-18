@@ -13,20 +13,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-
-  # Core dependency for using Firebase in a Flutter app. 
-  # It provides the initialization of Firebase services.
+  
+  # Firebase Core
   firebase_core: ^3.8.0
 
-  # Cloud Firestore is a NoSQL cloud database that is used to store, sync, 
-  # and query app data. It is ideal for real-time data, such as a to-do list or chat app.
+  # Cloud Firestore
   cloud_firestore: ^5.5.0
 
-  # Firebase Authentication provides backend services for easy and secure user authentication.
-  # It supports various authentication methods, including email/password, Google sign-in, etc.
+  # Firebase Authentication
   firebase_auth: ^5.3.3
+
 
   # iOS Styled Icons
   cupertino_icons: ^1.0.8
