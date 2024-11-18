@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "432456609077",
+    "project_id": "mitra-chatbot",
+    "storage_bucket": "mitra-chatbot.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432456609077:android:1b8e0d6afb066ee595b07c",
+        "android_client_info": {
+          "package_name": "com.example.mitra"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPnd-RetlbSDaJKXyl39SYI0L76EUGrRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
