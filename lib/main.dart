@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'helper/global.dart';
 import 'helper/pref.dart';
-import 'screen/splash_screen.dart';
+//import 'screen/splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'pages/login_page.dart';
+import 'firebase_options.dart';
+import 'pages/login_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +16,9 @@ Future<void> main() async {
   // init hive
   await Pref.initialize();
   //init firebase
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // Sign in anonymously (ensure Anonymous sign-in is enabled in Firebase Console)
   await FirebaseAuth.instance.signInAnonymously();
   // Set system UI mode and preferred orientations
@@ -62,8 +65,8 @@ class MyApp extends StatelessWidget {
                 color: Colors.blue, fontSize: 20, fontWeight: FontWeight.w500),
           )),
 
-      //
-      home: const SplashScreen(),
+      //home: const SplashScreen(),
+      home: LoginPage(),
     );
   }
 }
