@@ -16,12 +16,7 @@ Future<void> main() async {
   //init firebase
   await Firebase.initializeApp();
   // Sign in anonymously (ensure Anonymous sign-in is enabled in Firebase Console)
-  try {
-    await FirebaseAuth.instance.signInAnonymously();
-    print('Signed in anonymously');
-  } catch (e) {
-    print('Failed to sign in anonymously: $e');
-  }
+  await FirebaseAuth.instance.signInAnonymously();
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
