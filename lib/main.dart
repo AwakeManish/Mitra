@@ -6,7 +6,8 @@ import 'helper/pref.dart';
 import 'screen/splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +16,10 @@ Future<void> main() async {
   await Pref.initialize();
   //init firebase
   await Firebase.initializeApp();
-  // Sign in anonymously (ensure Anonymous sign-in is enabled in Firebase Console)
-  await FirebaseAuth.instance.signInAnonymously();
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  // Load environment variables
   await dotenv.load(fileName: 'assets/.env');
 
   runApp(const MyApp());
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
                 color: Colors.blue, fontSize: 20, fontWeight: FontWeight.w500),
           )),
 
-      //
+      //home: const SplashScreen(),
       home: const SplashScreen(),
     );
   }
