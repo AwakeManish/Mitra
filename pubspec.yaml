@@ -1,28 +1,31 @@
 name: mitra
 description: An AI Assistant (ChatBot, Image Generator & Language Translator) App Based on ChatGPT developed by Manish Kumar
 
-publish_to: 'none' 
+publish_to: "none"
 
 # App Version
 version: 1.0.2+2
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: ">=3.4.3 <4.0.0"
 
 # Dependencies
 dependencies:
   flutter:
     sdk: flutter
-  
+
   # Firebase Core
   firebase_core: ^3.8.0
+
+  pedometer: ^4.0.2
+  permission_handler: ^10.4.0
+  app_usage: ^2.1.1 # For tracking screen time on Android
 
   # Cloud Firestore
   cloud_firestore: ^5.5.0
 
   # Firebase Authentication
   firebase_auth: ^5.3.3
-
 
   # iOS Styled Icons
   cupertino_icons: ^1.0.8
@@ -54,7 +57,7 @@ dependencies:
   # For AI Image Generation
   dart_openai: ^5.1.0
   cached_network_image: ^3.3.1
-  
+
   # Google Gemini Ai Integration
   google_generative_ai: ^0.4.3
 
@@ -80,7 +83,6 @@ dev_dependencies:
   # icons_launcher: ^2.1.7
 
 flutter:
-
   # Enables Material Design
   uses-material-design: true
 
