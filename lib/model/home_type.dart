@@ -10,7 +10,7 @@ enum HomeType { aiChatBot, aiAQICalculator, healthWidget }
 extension MyHomeType on HomeType {
   // Title
   String get title => switch (this) {
-        HomeType.aiChatBot => 'AI ChatBot',
+        HomeType.aiChatBot => 'ChatBot',
         HomeType.aiAQICalculator => 'AQI Calculator',
         HomeType.healthWidget => 'Health Widget', // Add title for Health Widget
       };
