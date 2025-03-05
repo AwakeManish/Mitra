@@ -18,9 +18,9 @@ dependencies:
   firebase_core: ^3.8.0
 
   pedometer: ^4.0.2
-  permission_handler: ^10.4.0
+  permission_handler: ^11.3.0
   app_usage: ^2.1.1 # For tracking screen time on Android
-
+  usage_tracker: ^0.1.0
   # Cloud Firestore
   cloud_firestore: ^5.5.0
 
