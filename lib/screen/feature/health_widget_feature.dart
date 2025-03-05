@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:app_usage/app_usage.dart'; // Import app_usage package
+import 'package:app_usage/app_usage.dart'; // For tracking app usage
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 
@@ -19,35 +19,59 @@ class _HealthWidgetFeatureState extends State<HealthWidgetFeature> {
   @override
   void initState() {
     super.initState();
-    _fetchStepCount();
-    _fetchScreenTime();
+    _checkAndRequestPermissions();
+  }
+
+  // Check and request necessary permissions during initialization
+  Future<void> _checkAndRequestPermissions() async {
+    if (Platform.isAndroid) {
+      // Check and request Physical Activity permission
+      if (await Permission.activityRecognition.isDenied) {
+        await Permission.activityRecognition.request();
+      }
+
+      // Check and redirect to Usage Access settings if not granted
+      bool usagePermissionGranted = await _isUsageAccessGranted();
+      if (!usagePermissionGranted) {
+        await _redirectToUsageAccessSettings();
+      }
+
+      // Fetch step count and screen time after permissions are handled
+      _fetchStepCount();
+      _fetchScreenTime();
+    } else {
+      setState(() {
+        _stepCount = 'Not supported on this platform.';
+        _screenTime = 'Not available on iOS.';
+      });
+    }
+  }
+
+  // Check if Usage Access permission is granted
+  Future<bool> _isUsageAccessGranted() async {
+    try {
+      DateTime startDate = DateTime.now().subtract(const Duration(days: 1));
+      DateTime endDate = DateTime.now();
+      await AppUsage().getAppUsage(startDate, endDate);
+      return true; // If no exception occurs, permission is granted
+    } catch (e) {
+      return false; // Exception indicates permission is not granted
+    }
+  }
+
+  // Redirect user to Usage Access settings
+  Future<void> _redirectToUsageAccessSettings() async {
+    try {
+      await openAppSettings(); // Use permission_handler to open settings
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error redirecting to Usage Access settings: $e');
+      }
+    }
   }
 
   // Step Counting Logic
   Future<void> _fetchStepCount() async {
-    if (Platform.isAndroid) {
-      final status = await Permission.activityRecognition.status;
-      if (status != PermissionStatus.granted) {
-        final newStatus = await Permission.activityRecognition.request();
-        if (newStatus == PermissionStatus.granted) {
-          _startStepCountListener();
-        } else {
-          setState(() {
-            _stepCount = 'Permission Denied';
-          });
-          if (kDebugMode) {
-            print('Activity Recognition permission denied');
-          }
-        }
-      } else {
-        _startStepCountListener();
-      }
-    } else {
-      _startStepCountListener();
-    }
-  }
-
-  void _startStepCountListener() {
     Pedometer.stepCountStream.listen((event) {
       setState(() {
         _stepCount = event.steps.toString();
@@ -62,11 +86,10 @@ class _HealthWidgetFeatureState extends State<HealthWidgetFeature> {
     });
   }
 
-  // Screen Time Logic
+// Screen Time Logic
   Future<void> _fetchScreenTime() async {
     if (Platform.isAndroid) {
       try {
-        // Get app usage data for the past day
         DateTime startDate = DateTime.now().subtract(const Duration(days: 1));
         DateTime endDate = DateTime.now();
 
@@ -83,9 +106,6 @@ class _HealthWidgetFeatureState extends State<HealthWidgetFeature> {
               '${(totalMinutes / 60).toStringAsFixed(1)} hours'; // Display hours using string interpolation
         });
       } catch (e) {
-        if (kDebugMode) {
-          print("App Usage Error: $e");
-        }
         setState(() {
           _screenTime =
               'Error fetching screen time. Please grant Usage Access in settings.';
@@ -115,15 +135,6 @@ class _HealthWidgetFeatureState extends State<HealthWidgetFeature> {
               'Screen Time: $_screenTime',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                // Open settings to grant usage access
-                await openAppSettings(); // Use permission_handler to open settings
-                // After returning from settings, refresh screen time
-                await _fetchScreenTime();
-              },
-              child: const Text('Grant Usage Access'),
             ),
           ],
         ),
