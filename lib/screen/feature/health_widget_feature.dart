@@ -90,7 +90,8 @@ class _HealthWidgetFeatureState extends State<HealthWidgetFeature> {
   Future<void> _fetchScreenTime() async {
     if (Platform.isAndroid) {
       try {
-        DateTime startDate = DateTime.now().subtract(const Duration(days: 1));
+        DateTime startDate = DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day);
         DateTime endDate = DateTime.now();
 
         List<AppUsageInfo> usageInfoList =
@@ -101,9 +102,18 @@ class _HealthWidgetFeatureState extends State<HealthWidgetFeature> {
           (sum, app) => sum + app.usage.inMinutes,
         );
 
+        int hours = totalMinutes ~/ 60;
+        int minutes = totalMinutes % 60;
+
+        String timeString;
+        if (hours > 0) {
+          timeString = '$hours hours and $minutes minutes';
+        } else {
+          timeString = '$minutes minutes';
+        }
+
         setState(() {
-          _screenTime =
-              '${(totalMinutes / 60).toStringAsFixed(1)} hours'; // Display hours using string interpolation
+          _screenTime = timeString;
         });
       } catch (e) {
         setState(() {
